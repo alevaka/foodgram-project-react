@@ -33,39 +33,32 @@ class CustomUserViewSet(UserViewSet):
         """Добавление/удаление подписки на пользователей"""
 
         user = request.user
-        user_id = (int(username) if (username.isdigit()) else False)
-        if user_id:
-            if User.objects.filter(id=user_id).exists():
-                author = User.objects.get(id=user_id)
-                if request.method == 'POST':
-                    if author != user:
-                        follow, status = Follow.objects.get_or_create(
-                            user=user, author=author)
-                        if status:
-                            serializer = CustomUserSerializer(author)
-                            return Response(
-                                serializer.data,
-                                status=views.status.HTTP_201_CREATED)
-                        else:
-                            return Response(
-                                {'errors': 'Вы уже подписаны!'},
+        user_id = (int(username) if (username.isdigit()) else 0)
+        if not User.objects.filter(id=user_id).exists():
+            return Response({'errors': 'Неверная ссылка!'},
+                            status=views.status.HTTP_404_BAD_REQUEST)
+        author = User.objects.get(id=user_id)
+
+        if request.method == 'POST':
+            if author != user:
+                follow, status = Follow.objects.get_or_create(
+                    user=user, author=author)
+                if status:
+                    serializer = CustomUserSerializer(author)
+                    return Response(serializer.data,
+                                    status=views.status.HTTP_201_CREATED)
+                return Response({'errors': 'Вы уже подписаны!'},
                                 status=views.status.HTTP_400_BAD_REQUEST)
-                    else:
-                        return Response(
-                                {'errors': 'Нельзя подписаться на себя!'},
-                                status=views.status.HTTP_400_BAD_REQUEST)
-                if request.method == 'DELETE':
-                    if Follow.objects.filter(
-                            user=user, author=author).exists():
-                        Follow.objects.filter(
-                            user=user, author=author).delete()
-                        return Response(
-                                {'status': 'Подписка отменена.'},
+            return Response({'errors': 'Нельзя подписаться на себя!'},
+                            status=views.status.HTTP_400_BAD_REQUEST)
+
+        if request.method == 'DELETE':
+            if Follow.objects.filter(user=user, author=author).exists():
+                Follow.objects.filter(user=user, author=author).delete()
+                return Response({'status': 'Подписка отменена.'},
                                 status=views.status.HTTP_204_NO_CONTENT)
-                    return Response({'errors': "Вы не подписаны!"},
-                                    status=views.status.HTTP_400_BAD_REQUEST)
-        return Response({'errors': 'Неверная ссылка!'},
-                        status=views.status.HTTP_404_BAD_REQUEST)
+            return Response({'errors': "Вы не подписаны!"},
+                            status=views.status.HTTP_400_BAD_REQUEST)
 
 
 class APIUserViewDetail(generics.RetrieveAPIView):

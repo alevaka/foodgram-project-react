@@ -58,16 +58,16 @@ class RecipesViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(author_id=author_id)
         is_favorited = self.request.query_params.get('is_favorited')
         if is_favorited is not None:
-            if is_favorited == '1':
+            if int(is_favorited):
                 queryset = queryset.filter(favorite_recipes__id=user.id)
-            elif is_favorited == '0':
+            else:
                 queryset = queryset.exclude(favorite_recipes__id=user.id)
         is_in_shopping_cart = self.request.query_params.get(
                                                     'is_in_shopping_cart')
         if is_in_shopping_cart is not None:
-            if is_in_shopping_cart == '1':
+            if int(is_in_shopping_cart):
                 queryset = queryset.filter(shopping_cart__id=user.id)
-            elif is_in_shopping_cart == '0':
+            else:
                 queryset = queryset.exclude(shopping_cart__id=user.id)
         tag_slug_list = self.request.query_params.getlist('tags')
         if tag_slug_list is not None:
@@ -84,14 +84,14 @@ class RecipesViewSet(viewsets.ModelViewSet):
         if 'tags' in serializer.initial_data:
             tags = serializer.initial_data.pop('tags')
             tag_list = [get_object_or_404(Tag, pk=tag) for tag in tags]
-        if serializer.is_valid():
-            recipe = serializer.save(author=user)
+        serializer.is_valid(raise_exception=True)
+        recipe = serializer.save(author=user)
         ing_serializer = ContentSerializerCreate(recipe,
                                                  data=ingredients, many=True)
-        if ing_serializer.is_valid():
-            contetnt_list = ([Content(recipe=recipe, **item)
-                             for item in ing_serializer.validated_data])
-            Content.objects.bulk_create(contetnt_list)
+        ing_serializer.is_valid(raise_exception=True)
+        contetnt_list = ([Content(recipe=recipe, **item)
+                         for item in ing_serializer.validated_data])
+        Content.objects.bulk_create(contetnt_list)
         recipe_tag_list = ([RecipeTag(recipe=recipe, tag=item)
                            for item in tag_list])
         RecipeTag.objects.bulk_create(recipe_tag_list)
@@ -104,15 +104,15 @@ class RecipesViewSet(viewsets.ModelViewSet):
         if 'tags' in serializer.initial_data:
             tags = serializer.initial_data.pop('tags')
             tag_list = [get_object_or_404(Tag, pk=tag) for tag in tags]
-        if serializer.is_valid():
-            recipe = serializer.save()
+        serializer.is_valid(raise_exception=True)
+        recipe = serializer.save()
         ing_serializer = ContentSerializerCreate(recipe,
                                                  data=ingredients, many=True)
-        if ing_serializer.is_valid():
-            contetnt_list = ([Content(recipe=recipe, **item)
-                             for item in ing_serializer.validated_data])
-            Content.objects.filter(recipe=recipe).delete()
-            Content.objects.bulk_create(contetnt_list)
+        ing_serializer.is_valid(raise_exception=True)
+        contetnt_list = ([Content(recipe=recipe, **item)
+                         for item in ing_serializer.validated_data])
+        Content.objects.filter(recipe=recipe).delete()
+        Content.objects.bulk_create(contetnt_list)
         RecipeTag.objects.filter(recipe=recipe).delete()
         recipe_tag_list = ([RecipeTag(recipe=recipe, tag=item)
                            for item in tag_list])
