@@ -9,21 +9,22 @@ services:
       - ../backend/foodgram/.env
 
   web:
-    build: ../backend/foodgram/
-    restart: always
+    image: alevaka/foodgram:latest
+    command: >
+        bash -c "cd backend/foodgram/ &&
+                 python manage.py migrate &&
+                 python manage.py collectstatic --no-input &&
+                 gunicorn foodgram.wsgi:application --bind 0:8000"
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-    ports:
-     - "8000:8000"
-    links:
-      - db:db
-
-
+    depends_on:
+      - db
+    restart: always
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
 
   nginx:
     image: nginx:1.19.3
