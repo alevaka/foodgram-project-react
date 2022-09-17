@@ -2,8 +2,11 @@
 FROM node:13.12.0-alpine as build
 RUN echo "$PWD"
 WORKDIR /app
+RUN echo $(ls)
 COPY package*.json ./
-COPY . ./
+RUN echo $(ls)
+COPY ./frontend/ ./
+RUN echo $(ls)
 RUN npm install
 RUN echo "-----FILES------"
 RUN echo "$PWD"
