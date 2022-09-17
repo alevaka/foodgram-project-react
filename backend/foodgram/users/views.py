@@ -60,6 +60,8 @@ class CustomUserViewSet(UserViewSet):
             return Response({'errors': "Вы не подписаны!"},
                             status=views.status.HTTP_400_BAD_REQUEST)
 
+        return Response(status=views.status.HTTP_400_BAD_REQUEST)
+
 
 class APIUserViewDetail(generics.RetrieveAPIView):
     """Вывод отдельного пользователя"""

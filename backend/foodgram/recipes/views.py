@@ -63,7 +63,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
             else:
                 queryset = queryset.exclude(favorite_recipes__id=user.id)
         is_in_shopping_cart = self.request.query_params.get(
-                                                    'is_in_shopping_cart')
+            'is_in_shopping_cart')
         if is_in_shopping_cart is not None:
             if int(is_in_shopping_cart):
                 queryset = queryset.filter(shopping_cart__id=user.id)
@@ -181,8 +181,8 @@ class RecipesViewSet(viewsets.ModelViewSet):
             ).annotate(amount=Sum('recipe_to_ingredient__amount'))
             text_ingredients = ['Требуемые ингредиенты:\n']
             for ingredient in shopping_cart_ingredients:
-                if ingredient[
-                 'recipe_to_ingredient__ingredient__name'] is not None:
+                if (ingredient['recipe_to_ingredient__ingredient__name']
+                        is not None):
                     values = list(ingredient.values())
                     text_ingredients.append(
                         f' - {values[0]} ({values[1]}) — {values[2]}\n'

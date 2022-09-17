@@ -9,12 +9,12 @@ class Ingredient(models.Model):
         max_length=200,
         null=False,
         verbose_name='Название ингридиента'
-        )
+    )
     measurement_unit = models.CharField(
         max_length=200,
         null=False,
         verbose_name='Единицы измерения'
-        )
+    )
 
     def __str__(self):
         return self.name
@@ -27,16 +27,16 @@ class Tag(models.Model):
         max_length=200,
         null=False,
         verbose_name='Имя тега'
-        )
+    )
     color = models.CharField(
         max_length=7,
         null=True,
         verbose_name='Цвет тега'
-        )
+    )
     slug = models.SlugField(
         max_length=200,
         null=True
-        )
+    )
 
     def __str__(self):
         return self.name
@@ -51,34 +51,34 @@ class Recipe(models.Model):
         related_name='recipes',
         null=False,
         verbose_name='Автор'
-        )
+    )
     name = models.CharField(
         max_length=200,
         null=False,
         verbose_name='Название рецепта'
-        )
+    )
     image = models.ImageField(
         upload_to='recipes/images/',
         null=False,
         default=None
-        )
+    )
     text = models.TextField(
         null=False,
         verbose_name='Изображение'
-        )
+    )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='Content',
         verbose_name='Ингридиенты'
-        )
+    )
     tags = models.ManyToManyField(
         Tag,
         through='RecipeTag',
         verbose_name='Тэги'
-        )
+    )
     cooking_time = models.IntegerField(
         verbose_name='Время готовки'
-        )
+    )
 
     @property
     def favorite_amount(self):
