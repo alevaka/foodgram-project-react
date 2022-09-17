@@ -8,7 +8,6 @@ RUN echo $(ls)
 COPY ./frontend/ ./
 RUN echo $(ls)
 RUN npm install
-RUN echo "-----FILES------"
 RUN echo "$PWD"
 RUN echo $(ls)
 RUN npm run build

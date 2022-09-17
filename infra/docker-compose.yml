@@ -51,14 +51,13 @@ services:
       - web
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: alevaka/foodgram-frontend:latest
     volumes:
       - ../frontend/build:/app/result_build/build/
-
+    depends_on:
+      - web
+    restart: always
 
 volumes:
   static_value:
   media_value:
-
