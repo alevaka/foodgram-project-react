@@ -4,5 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . ./
+RUN echo "-----FILES------"
+RUN echo "$PWD"
+RUN ll
 RUN npm run build
 CMD cp -r build result_build
