@@ -30,7 +30,7 @@ services:
 
     ports:
       - "80:80"
-
+    restart: always
     volumes:
 
       # Контейнер nginx будет работать с данными, хранящиеся в томе static_value, 
@@ -54,6 +54,7 @@ services:
       - ../frontend/build:/app/result_build/build/
     depends_on:
       - web
+    restart: always
 
 volumes:
   static_value:
