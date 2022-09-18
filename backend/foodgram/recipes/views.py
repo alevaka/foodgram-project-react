@@ -118,7 +118,8 @@ class RecipesViewSet(viewsets.ModelViewSet):
                            for item in tag_list])
         RecipeTag.objects.bulk_create(recipe_tag_list)
 
-    @action(detail=True, methods=['post', 'delete'], name='favorite')
+    @action(detail=True, methods=['post', 'delete'], name='favorite',
+            permission_classes=[permissions.IsAuthenticated])
     def favorite(self, request, pk=None):
         """Добавление/удаление в/из избранное"""
 
@@ -143,7 +144,8 @@ class RecipesViewSet(viewsets.ModelViewSet):
             return Response({'status': "favorite doesn't exist"},
                             status=views.status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post', 'delete'], name='shopping_cart')
+    @action(detail=True, methods=['post', 'delete'], name='shopping_cart',
+            permission_classes=[permissions.IsAuthenticated])
     def shopping_cart(self, request, pk=None):
         """Добавление/удаление в/из корзины"""
 
