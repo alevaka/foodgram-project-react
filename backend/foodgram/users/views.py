@@ -25,7 +25,7 @@ class CustomUserViewSet(UserViewSet):
             serializer = FollowUserSerializer(following_users,
                                               many=True,
                                               context={'request': request})
-            return Response(serializer.data)
+            return self.get_paginated_response(serializer.data)
         return Response({'status': 'not authorized'})
 
     @action(detail=True, methods=['post', 'delete'], name='subscribe')
