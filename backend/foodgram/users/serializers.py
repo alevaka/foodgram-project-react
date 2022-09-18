@@ -4,9 +4,15 @@ from users.models import User
 
 
 class CustomUserSerializer(UserSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ('email', 'id', 'username', 'first_name', 'last_name')
+
+    def get_is_subscribed(self, obj):
+        return obj.following.filter(
+            user=self.context.get('request').user).exists()
 
 
 class FollowUserSerializer(UserSerializer):
