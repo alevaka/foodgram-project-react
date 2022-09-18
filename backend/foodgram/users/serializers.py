@@ -23,7 +23,7 @@ class FollowUserSerializer(UserSerializer):
         return obj.recipes.count()
 
     def get_is_subscribed(self, obj):
-        return obj.follower.filter(
+        return obj.following.filter(
             author=self.context.get('request').user).exists()
 
     def get_recipes(self, obj):
