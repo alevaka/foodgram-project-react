@@ -42,5 +42,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         importjson2db(
             Ingredient,
-            '..\\..\\data\\ingredients.json'
+            '..//data//ingredients.json'
         )
