@@ -32,3 +32,17 @@
 + PostgreSQL
 + Nginx
 + docker
+
+
+### Адрес сервера:
+```
+51.250.95.22
+```
+```
+alex-praktikum.ddns.net
+```
+
+### Администратор:
+```
+admin/admin
+```
