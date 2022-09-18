@@ -21,11 +21,13 @@ class CustomUserViewSet(UserViewSet):
 
         user = request.user
         if user.is_authenticated:
+            paginator = CustomPagination()
             following_users = User.objects.filter(following__user=user)
-            serializer = FollowUserSerializer(following_users,
+            page = paginator.paginate_queryset(following_users, request)
+            serializer = FollowUserSerializer(page,
                                               many=True,
                                               context={'request': request})
-            return self.get_paginated_response(serializer.data)
+            return paginator.get_paginated_response(serializer.data)
         return Response({'status': 'not authorized'})
 
     @action(detail=True, methods=['post', 'delete'], name='subscribe')
