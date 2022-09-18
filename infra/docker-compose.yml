@@ -12,8 +12,7 @@ services:
   web:
     image: alevaka/foodgram:latest
     command: >
-        bash -c "cd backend/foodgram/ &&
-                 python manage.py migrate &&
+        bash -c "python manage.py migrate &&
                  python manage.py collectstatic --no-input &&
                  gunicorn foodgram.wsgi:application --bind 0:8000"
     volumes:
