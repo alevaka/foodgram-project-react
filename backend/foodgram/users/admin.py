@@ -9,8 +9,8 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class UserFavorites(admin.ModelAdmin):
-     model= User
-     filter_horizontal = ('favorites',)
+    model = User
+    filter_horizontal = ('favorites',)
 
 
 admin.site.register(User, UserFavorites)
