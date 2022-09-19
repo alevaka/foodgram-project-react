@@ -10,6 +10,7 @@ class UserAdmin(admin.ModelAdmin):
 
 class UserFavorites(admin.ModelAdmin):
     model = User
+    list_display = ('pk', 'first_name', 'favorites')
     filter_horizontal = ('favorites',)
 
 
