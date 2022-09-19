@@ -4,16 +4,21 @@ from recipes.models import Content, Ingredient, Recipe, RecipeTag, Tag
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'author', 'favorite_amount')
-    list_filter = ('name', 'author', 'tags')
+    list_filter = ('tags')
+    search_fields = ('name', 'author', 'tags')
 
 
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'measurement_unit')
-    list_filter = ('name',)
     search_fields = ('name',)
 
 
-admin.site.register(Content)
+class ContentAdmin(admin.ModelAdmin):
+    list_display = ('recipe', 'ingredient', 'amount')
+    search_fields = ('recipe', 'ingredient')
+
+
+admin.site.register(Content, ContentAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeTag)
