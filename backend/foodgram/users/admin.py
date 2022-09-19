@@ -8,16 +8,28 @@ class UserAdmin(admin.ModelAdmin):
     search_fileds = ('first_name')
 
 
-class UserFavorites(admin.ModelAdmin):
-    model = User
-    list_display = ('pk', 'first_name', 'favorites')
-    filter_horizontal = ('favorites',)
-
-
-class Favorites(User):
+class UserShoppingCart(User.shopping_cart.through):
     class Meta:
+        verbose_name_plural = "Списки покупок"
         proxy = True
 
 
+class UserFavorites(User.favorites.through):
+    class Meta:
+        verbose_name_plural = "Избранные"
+        proxy = True
+
+
+class UserFavoritesAdmin(admin.ModelAdmin):
+    model = User.favorites.through
+    list_display = ('pk', 'user', 'recipe')
+
+
+class UserShoppingCartAdmin(admin.ModelAdmin):
+    model = User.shopping_cart.through
+    list_display = ('pk', 'user', 'recipe')
+
+
 admin.site.register(User, UserAdmin)
-admin.site.register(Favorites, UserFavorites)
+admin.site.register(UserFavorites, UserFavoritesAdmin)
+admin.site.register(UserShoppingCart, UserShoppingCartAdmin)
