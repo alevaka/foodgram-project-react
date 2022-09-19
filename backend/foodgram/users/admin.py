@@ -13,6 +13,10 @@ class UserFavorites(admin.ModelAdmin):
     filter_horizontal = ('favorites',)
 
 
-admin.site.register(User, UserFavorites)
+class Favorites(User):
+    class Meta:
+        proxy = True
+
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Favorites, UserFavorites)
