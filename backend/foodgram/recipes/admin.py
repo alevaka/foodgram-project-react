@@ -4,7 +4,7 @@ from recipes.models import Content, Ingredient, Recipe, RecipeTag, Tag
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'author', 'favorite_amount')
-    list_filter = ('tags')
+    list_filter = ('tags',)
     search_fields = ('name', 'author', 'tags')
 
 
