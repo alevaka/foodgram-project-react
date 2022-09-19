@@ -5,7 +5,7 @@ from recipes.models import Content, Ingredient, Recipe, RecipeTag, Tag
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'author', 'favorite_amount')
     list_filter = ('tags',)
-    search_fields = ('name', 'author', 'tags')
+    search_fields = ('name', 'author__first_name', 'tags__name')
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -15,7 +15,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 class ContentAdmin(admin.ModelAdmin):
     list_display = ('recipe', 'ingredient', 'amount')
-    search_fields = ('recipe', 'ingredient')
+    search_fields = ('recipe__name', 'ingredient__name')
 
 
 admin.site.register(Content, ContentAdmin)

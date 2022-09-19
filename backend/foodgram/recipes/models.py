@@ -92,6 +92,10 @@ class Recipe(models.Model):
 class Content(models.Model):
     """Класс для компонентов рецепта"""
 
+    class Meta:
+        verbose_name = "ингредиент в рецепте"
+        verbose_name_plural = "ингредиенты в рецептах"
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
