@@ -8,11 +8,11 @@ class UserAdmin(admin.ModelAdmin):
     search_fileds = ('first_name')
 
 
-# class UserFavorites(admin.ModelAdmin):
-#     model = User
-#     filter_horizontal = ('favorites',)
+class UserFavorites(admin.ModelAdmin):
+    model = User
+    filter_horizontal = ('favorites',)
 
 
-# admin.site.register(User, UserFavorites)
+admin.site.register(User, UserFavorites)
 
 admin.site.register(User, UserAdmin)
